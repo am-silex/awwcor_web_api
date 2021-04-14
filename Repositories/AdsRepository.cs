@@ -57,20 +57,11 @@ namespace awwcor_web_api.Repositories
         {
             return _table.Find(id);
         }
-        public List<T> GetAll(Expression<Func<T, bool>> expression = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            List<string> includes = null)
+        public List<T> GetAll()
         {
-            IQueryable<T> query = _table.AsQueryable<T>();
-            if (includes != null)
-            {     
-                foreach (var includeProperty in includes)
-                {
-                    query.Include(includeProperty);
-                }
-            }
-            return query.AsNoTracking().ToList<T>();
+            return _table.AsNoTracking().ToList();
         }
+       
 
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace awwcor_web_api.Controllers
@@ -21,12 +22,11 @@ namespace awwcor_web_api.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpGet]
-        public IActionResult GetAds()
+        public IActionResult GetAllAdDTOs()
         {
             try
             {
-                var ads = _unitOfWork.Ads.GetAll();
-                return new JsonResult(ads);
+                return new JsonResult(_unitOfWork.GetAllAdDTOs);
             }
             catch (Exception ex)
             {
@@ -35,11 +35,11 @@ namespace awwcor_web_api.Controllers
             }
         }
         [HttpGet("{id:int}")]
-        public IActionResult GetAd(int id)
+        public IActionResult GetAd(int id, [FromQuery] string fields = "")
         {
             try
             {
-                var ad = _unitOfWork.Ads.GetOne(id);
+                var ad = _unitOfWork.GetAdDTOById(id);
                 return new JsonResult(ad);
             }
             catch (Exception ex)

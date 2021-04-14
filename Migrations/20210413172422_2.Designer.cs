@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using awwcor_web_api.Models;
 
 namespace awwcor_web_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210413172422_2")]
+    partial class _2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,10 @@ namespace awwcor_web_api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdId")
+                    b.Property<int>("AdId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Photo")
                         .HasColumnType("int");
 
                     b.Property<string>("PhotoURL")
@@ -57,14 +62,22 @@ namespace awwcor_web_api.Migrations
 
                     b.HasIndex("AdId");
 
+                    b.HasIndex("Photo");
+
                     b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("awwcor_web_api.Models.Photo", b =>
                 {
                     b.HasOne("awwcor_web_api.Models.Ad", "Ad")
+                        .WithMany()
+                        .HasForeignKey("AdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("awwcor_web_api.Models.Ad", null)
                         .WithMany("Photos")
-                        .HasForeignKey("AdId");
+                        .HasForeignKey("Photo");
 
                     b.Navigation("Ad");
                 });

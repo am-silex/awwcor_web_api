@@ -11,8 +11,6 @@ namespace awwcor_web_api.Repositories
         int Update(T entity);
         int Delete(T entity);
         T GetOne(int? id);
-        List<T> GetAll(Expression<Func<T, bool>> expression = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            List<string> includes = null);
+        List<T> GetAll();
     }
 }

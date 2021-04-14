@@ -20,6 +20,29 @@ namespace awwcor_web_api.Repositories
         }
         public AdsRepository<Ad> Ads => _ads;
         public AdsRepository<Photo> Photo => _photo;
+        public List<AdDTO> GetAllAdDTOs { get {
+                var adsDTO = from a in _dbContext.Ad
+                             let mainPhoto = a.Photos.FirstOrDefault(l => l.Ad == a)
+                             orderby a.Price
+                             select new AdDTO()
+                             {
+                                 Id = a.Id,
+                                 Title = a.Title,
+                                 MainPhotoLink = mainPhoto.PhotoURL,
+                                 Price = a.Price
+                             };
+                return adsDTO.ToList();
+            } }
+
+        public AdDTO GetAdDTOById(int id) {
+            var ad = _dbContext.Ad.Find(id);
+            if (ad != null)
+            {
+                return new AdDTO { Id = ad.Id, Title = ad.Title, Price = ad.Price, MainPhotoLink = _dbContext.Photo.FirstOrDefault(x => x.Ad == ad)?.PhotoURL};
+            }
+            else
+                return null;
+            }
         public void Save()
         {
             _dbContext.SaveChanges();

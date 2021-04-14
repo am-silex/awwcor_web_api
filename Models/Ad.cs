@@ -12,10 +12,6 @@ namespace awwcor_web_api.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
-        
-        [ForeignKey(nameof(Photo))]
-        public int MainPhotoID { get; set; }
-        
-        
+        public ICollection<Photo> Photos { get; set; }
     }
 }

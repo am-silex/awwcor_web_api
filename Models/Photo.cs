@@ -10,8 +10,6 @@ namespace awwcor_web_api.Models
     {
         public int Id { get; set; }   
         public string PhotoURL { get; set; }
-        [ForeignKey(nameof(Ad))]
-        public int AdId { get; set; }
         public Ad Ad { get; set; }
     }
 }
