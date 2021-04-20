@@ -2,7 +2,7 @@
 
 namespace awwcor_web_api.Migrations
 {
-    public partial class databasemigration : Migration
+    public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,7 @@ namespace awwcor_web_api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    MainPhotoID = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +28,7 @@ namespace awwcor_web_api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PhotoURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AdId = table.Column<int>(type: "int", nullable: false)
+                    AdId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,7 +38,7 @@ namespace awwcor_web_api.Migrations
                         column: x => x.AdId,
                         principalTable: "Ad",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

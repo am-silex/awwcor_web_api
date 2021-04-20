@@ -10,8 +10,8 @@ using awwcor_web_api.Models;
 namespace awwcor_web_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210413172422_2")]
-    partial class _2
+    [Migration("20210420122228_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,10 +49,7 @@ namespace awwcor_web_api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Photo")
+                    b.Property<int?>("AdId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhotoURL")
@@ -62,22 +59,14 @@ namespace awwcor_web_api.Migrations
 
                     b.HasIndex("AdId");
 
-                    b.HasIndex("Photo");
-
                     b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("awwcor_web_api.Models.Photo", b =>
                 {
                     b.HasOne("awwcor_web_api.Models.Ad", "Ad")
-                        .WithMany()
-                        .HasForeignKey("AdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("awwcor_web_api.Models.Ad", null)
                         .WithMany("Photos")
-                        .HasForeignKey("Photo");
+                        .HasForeignKey("AdId");
 
                     b.Navigation("Ad");
                 });

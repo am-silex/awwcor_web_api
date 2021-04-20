@@ -38,11 +38,51 @@ namespace awwcor_web_api.Repositories
             var ad = _dbContext.Ad.Find(id);
             if (ad != null)
             {
-                return new AdDTO { Id = ad.Id, Title = ad.Title, Price = ad.Price, MainPhotoLink = _dbContext.Photo.FirstOrDefault(x => x.Ad == ad)?.PhotoURL};
+                return new AdDTO { 
+                    Id = ad.Id, 
+                    Title = ad.Title, 
+                    Price = ad.Price, 
+                    MainPhotoLink = _dbContext.Photo.FirstOrDefault(x => x.Ad == ad)?.PhotoURL
+                };
             }
             else
                 return null;
             }
+        public int SaveNewAd(AdFullDTO ad, out string message)
+        {
+            message = "";
+            if (ad.Title.Length > 200) {
+                message = "Title is more then 200 characters";
+                return -1; }
+            if (ad.Description.Length > 1000)
+            {
+                message = "Description is more then 1000 characters";
+                return -1;
+            }
+            if (ad.PhotoLinks.Count() > 3)
+            {
+                message = "More than 3 photo links is not allowed";
+                return -1;
+            }
+
+            Ad newAd = new Ad();
+            newAd.Title = ad.Title;
+            newAd.Description = ad.Description;
+            newAd.Price = ad.Price;
+            if (ad.PhotoLinks.Count() > 0)
+            {
+                var newPhotoLinks = new List<Photo>();
+                foreach (var photoLink in ad.PhotoLinks)
+                {
+                    Photo newPhoto = new Photo();
+                    newPhoto.PhotoURL = photoLink;
+                    newPhotoLinks.Add(newPhoto);
+                }
+                newAd.Photos = newPhotoLinks;
+            }
+            Ads.Add(newAd);
+            return newAd.Id;
+        }
         public void Save()
         {
             _dbContext.SaveChanges();

@@ -12,11 +12,11 @@ namespace awwcor_web_api.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class AdsListingController
+    public class AdsController
     {
         private readonly UnitOfWork _unitOfWork;
-        private readonly ILogger<AdsListingController> _logger;
-        public AdsListingController(UnitOfWork unitOfWork, ILogger<AdsListingController> logger)
+        private readonly ILogger<AdsController> _logger;
+        public AdsController(UnitOfWork unitOfWork, ILogger<AdsController> logger)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -45,6 +45,28 @@ namespace awwcor_web_api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error invoking GetAd - {ex.Message}");
+                return new StatusCodeResult(500);
+            }
+        }
+        [HttpPost]
+        public IActionResult PostAd(AdFullDTO newAd)
+        {
+            try
+            {
+                string message = "";
+                int newAdID = _unitOfWork.SaveNewAd(newAd, out message);
+
+                var res = new
+                {
+                    AdID = newAdID,
+                    Message = message 
+                };
+
+                return new JsonResult(res);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error invoking PostAd - {ex.Message}");
                 return new StatusCodeResult(500);
             }
         }
